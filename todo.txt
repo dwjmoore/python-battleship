@@ -1,0 +1,8 @@
+Board symbols:
+x -- hit
+o -- miss
+A -- Aircraft Carrier
+B -- battleship
+C -- Cruiser
+D -- Destroyer
+S -- Submarine

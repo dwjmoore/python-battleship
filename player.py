@@ -1,6 +1,6 @@
 class Player:
-	def __init__(self):
-		pass
+	def __init__(self, player_number):
+		self.player_number = player_number
 	
 	def attack(self, other_player):
 		pass
