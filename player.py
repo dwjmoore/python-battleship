@@ -5,5 +5,5 @@ class Player:
 	def attack(self, other_player):
 		pass
 		
-	def place_ship(self, ship):
-		pass
+	def place_ships(self, board):
+		board.display_board(board.player_board)
