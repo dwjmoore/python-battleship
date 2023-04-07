@@ -9,6 +9,7 @@ class Ship:
 			self.length = 3
 		if self.type == 'destroyer':
 			self.length = 2
+		self.location = []
 
 	def take_a_hit(self):
 		pass
