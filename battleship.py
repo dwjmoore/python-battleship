@@ -49,6 +49,6 @@ BBBBBB  A     A    T       T    LLLLLLL EEEEEEE SSSSSSS H     H IIIIIII P
 		ships2 = [carrier2, battleship2, cruiser2, submarine2, destroyer2]
 
 		player1.place_ships(board1, ships1)
-		input("Hit enter to begin ship placement for player two.")
-		print()
-		player2.place_ships(board2, ships2)
+		# input("Hit enter to begin ship placement for player two.")
+		# print()
+		# player2.place_ships(board2, ships2)
