@@ -19,39 +19,51 @@ class Player:
 		coord1 = input(
 		 f"Where would you like to place one end of your {ship.type}? Enter one coordinate. For example, C3 or D10: "
 		).upper().strip()
-		letter_check = coord1[0:1]
-		number_check = coord1[1:]
+		coord1_valid = Player.check_coord1_validity(coord1)
 
-		while letter_check not in [
-		  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'
-		] or number_check not in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']:
+		while coord1_valid == False:
 			coord1 = input(
 			 "Invalid entry. Please enter a letter from A through J and a number from 1 through 10. For example, C3 or D10: "
 			).upper().strip()
-			letter_check = coord1[0:1]
-			number_check = coord1[1:]
+			coord1_valid = Player.check_coord1_validity(coord1)
 
 		coord2 = input(
 		 f"Where would you like to place the other end of your {ship.type}? Enter one coordinate. Ships cannot be placed diagonally, only vertically or horizontally: "
 		).upper().strip()
-		letter_check = coord2[0:1]
-		number_check = coord2[1:]
+		coord2_valid = Player.check_coord2_validity(coord1, coord2, ship.length)
 
-		while (letter_check not in [
-		  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'
-		]) or (number_check not in [
-		  '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'
-		]) or (coord1[0:1] != coord2[0:1] and coord1[1:] != coord2[1:]):
+		while coord2_valid == False:
 			coord2 = input(
 			 "Invalid entry. Either you entered an invalid coordinate or you tried to place the ship diagonally. Please try again: "
 			).upper().strip()
-			letter_check = coord2[0:1]
-			number_check = coord2[1:]
+			coord2_valid = Player.check_coord2_validity(coord1, coord2, ship.length)
 
-		Player.is_coord_length_too_long(coord1, coord2, ship.length)
 		return coord1, coord2
 
-	def is_coord_length_too_long(coord1, coord2, ship_length):
+	def check_coord1_validity(coord1):
+		#Check if the coord entered is a valid letter/number combo
+		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+		coord_letter = coord1[0:1]
+		coord_number = coord1[1:]
+		if coord_letter not in letters or coord_number:
+			return False
+
+		#Check if there is already a ship at that coord entered
+
+		return True
+
+
+
+		
+		
+
+	def check_coord2_validity(coord1, coord2, ship_length):
+		#Check if the coord entered is a valid letter/number combo
+		#Check if there is already a ship at that coord entered
+		#Check if the length between coords equals ship length
+		#check if there is a ship already between coord1 and coord2
+
 		letters = {
 		 'A': 1,
 		 'B': 2,
