@@ -7,7 +7,7 @@ class Ship:
 		if self.type == 'battleship':
 			self.length = 4
 			self.symbol = 'B'
-		if self.type == 'cruiser'
+		if self.type == 'cruiser':
 			self.length = 3
 			self.symbol = 'C'
 		if self.type == 'submarine':
