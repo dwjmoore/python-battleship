@@ -104,18 +104,45 @@ class Player:
 		return True
 
 	def insert_coords_into_player_board(player_board, coord1, coord2, ship):
-		if ship.type == 'carrier':
-			player_board[coord1] = 'A'
-			player_board[coord2] = 'A'
-		if ship.type == 'battleship':
-			player_board[coord1] = 'B'
-			player_board[coord2] = 'B'
-		if ship.type == 'cruiser':
-			player_board[coord1] = 'C'
-			player_board[coord2] = 'C'
-		if ship.type == 'submarine':
-			player_board[coord1] = 'S'
-			player_board[coord2] = 'S'
-		if ship.type == 'destroyer':
-			player_board[coord1] = 'D'
-			player_board[coord2] = 'D'
+		letters_to_numbers = {
+		 'A': 1,
+		 'B': 2,
+		 'C': 3,
+		 'D': 4,
+		 'E': 5,
+		 'F': 6,
+		 'G': 7,
+		 'H': 8,
+		 'I': 9,
+		 'J': 10
+		}
+		numbers_to_letters = {
+		 1: 'A',
+		 2: 'B',
+		 3: 'C',
+		 4: 'D',
+		 5: 'E',
+		 6: 'F',
+		 7: 'G',
+		 8: 'H',
+		 9: 'I',
+		 10: 'J'
+		}
+		player_board[coord1] = ship.symbol
+		player_board[coord2] = ship.symbol
+		if coord1[0] == coord2[0] and int(coord1[1]) < int(coord2[1]):
+			for x in range(1, ship.length - 1):
+				player_board[coord1[0] + str(int(coord1[1]) + x)] = ship.symbol
+		if coord1[0] == coord2[0] and int(coord1[1]) > int(coord2[1]):
+			for x in range(1, ship.length - 1):
+				player_board[coord2[0] + str(int(coord2[1]) + x)] = ship.symbol
+		if coord1[0] != coord2[0] and letters_to_numbers[
+		  coord1[0]] < letters_to_numbers[coord2[0]]:
+			for x in range(1, ship.length - 1):
+				player_board[numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
+				             coord1[1]] = ship.symbol
+		if coord1[0] != coord2[0] and letters_to_numbers[
+		  coord1[0]] > letters_to_numbers[coord2[0]]:
+			for x in range(1, ship.length - 1):
+				player_board[numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
+				             coord2[1]] = ship.symbol
