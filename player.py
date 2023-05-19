@@ -29,16 +29,16 @@ class Player:
 		 f"Where would you like to place the other end of your {ship.type}? Enter one coordinate. Ships cannot be placed diagonally, only vertically or horizontally: "
 		).upper().strip()
 		coord2_valid = Player.check_coord2_validity(coord1, coord2, player_board,
-		                                            ship.length)
+		                                            ship)
 
 		while coord2_valid == False:
 			coord2 = input("Try again: ").upper().strip()
 			coord2_valid = Player.check_coord2_validity(coord1, coord2, player_board,
-			                                            ship.length)
+			                                            ship)
 		return coord1, coord2
 
 	def check_coord1_validity(coord1, player_board):
-		#Check if the coord entered is a valid letter/number combo
+		#Checks if the coord entered is a valid letter/number combo
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 		coord_letter = coord1[0:1]
@@ -46,19 +46,34 @@ class Player:
 		if coord_letter not in letters or coord_number not in numbers:
 			print("You did not enter a valid coordinate.")
 			return False
-		#Check if there is already a ship at the coord entered
+		#Checks if there is already a ship at the coord entered
 		if bool(player_board[coord1]) == True:
 			print("There is already a ship placed at that coordinate.")
 			return False
 		return True
 
-	def check_coord2_validity(coord1, coord2, player_board, ship_length):
-		return True
-		#Check if the coord entered is a valid letter/number combo
-		#Check if there is already a ship at that coord entered
+	def check_coord2_validity(coord1, coord2, player_board, ship):
+		#Checks if the coord entered is a valid letter/number combo
+		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+		coord_letter = coord2[0:1]
+		coord_number = coord2[1:]
+		if coord_letter not in letters or coord_number not in numbers:
+			print("You did not enter a valid coordinate.")
+			return False
+		#Checks if coord2 == coord1
+		if coord2 == coord1:
+			print("The second coordinate cannot be the same as the first coordinate.")
+			return False
+		#Checks if there is already a ship at the coord entered
+		if bool(player_board[coord2]) == True:
+			print("There is already a ship placed at that coordinate.")
+			return False
+		#Checks if the ship is placed diagonally
+		if coord1[0] != coord2[0] and coord1[1] != coord2[1]:
+			print("You cannot place your ship diagonally.")
+			return False
 		#Check if the length between coords equals ship length
-		#check if there is a ship already between coord1 and coord2
-
 		letters = {
 		 'A': 1,
 		 'B': 2,
@@ -71,9 +86,22 @@ class Player:
 		 'I': 9,
 		 'J': 10
 		}
-		if coord1[0:1] != coord2[0:1]:
-			coords_length = abs(letters[coord1[0:1]] - letters[coord2[0:1]]) + 1
-			print(coords_length)
+		if coord1[0] == coord2[0]:
+			coords_length = abs(int(coord1[1]) - int(coord2[1])) + 1
+		if coord1[0] != coord2[0]:
+			coords_length = abs(letters[coord1[0]] - letters[coord2[0]]) + 1
+		if coords_length < ship.length:
+			print(
+			 f"The distance between the two coordinates is shorter than the {ship.type}."
+			)
+			return False
+		if coords_length > ship.length:
+			print(
+			 f"The distance between the two coordinates is longer than the {ship.type}."
+			)
+			return False
+		#check if there is a ship already between coord1 and coord2
+		return True
 
 	def insert_coords_into_player_board(player_board, coord1, coord2, ship):
 		if ship.type == 'carrier':
