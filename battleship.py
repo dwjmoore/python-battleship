@@ -46,8 +46,8 @@ class Battleship:
 		#Players take turns guessing where their enemy's ships are
 		game_on = True
 		while game_on == True:
-			player1.attack(player2)
-			player2.attack(player1)
+			player1.attack()
+			player2.attack()
 			game_on = False
 
 	def print_game_title():
