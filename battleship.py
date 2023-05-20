@@ -37,10 +37,18 @@ class Battleship:
 		destroyer2 = ship.Ship('destroyer')
 		ships2 = [carrier2, battleship2, cruiser2, submarine2, destroyer2]
 
+		#Players place their ships
 		player1.place_ships(board1, ships1)
 		input("Hit enter to begin ship placement for player two.")
 		print()
 		player2.place_ships(board2, ships2)
+
+		#Players take turns guessing where their enemy's ships are
+		game_on = True
+		while game_on == True:
+			player1.attack(player2)
+			player2.attack(player1)
+			game_on = False
 
 	def print_game_title():
 		print("""
