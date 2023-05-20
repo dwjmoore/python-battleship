@@ -53,6 +53,30 @@ class Player:
 		return True
 
 	def check_coord2_validity(coord1, coord2, player_board, ship):
+		letters_to_numbers = {
+		 'A': 1,
+		 'B': 2,
+		 'C': 3,
+		 'D': 4,
+		 'E': 5,
+		 'F': 6,
+		 'G': 7,
+		 'H': 8,
+		 'I': 9,
+		 'J': 10
+		}
+		numbers_to_letters = {
+		 1: 'A',
+		 2: 'B',
+		 3: 'C',
+		 4: 'D',
+		 5: 'E',
+		 6: 'F',
+		 7: 'G',
+		 8: 'H',
+		 9: 'I',
+		 10: 'J'
+		}
 		#Checks if the coord entered is a valid letter/number combo
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -74,22 +98,11 @@ class Player:
 			print("You cannot place your ship diagonally.")
 			return False
 		#Check if the length between coords equals ship length
-		letters = {
-		 'A': 1,
-		 'B': 2,
-		 'C': 3,
-		 'D': 4,
-		 'E': 5,
-		 'F': 6,
-		 'G': 7,
-		 'H': 8,
-		 'I': 9,
-		 'J': 10
-		}
 		if coord1[0] == coord2[0]:
 			coords_length = abs(int(coord1[1]) - int(coord2[1])) + 1
 		if coord1[0] != coord2[0]:
-			coords_length = abs(letters[coord1[0]] - letters[coord2[0]]) + 1
+			coords_length = abs(letters_to_numbers[coord1[0]] -
+			                    letters_to_numbers[coord2[0]]) + 1
 		if coords_length < ship.length:
 			print(
 			 f"The distance between the two coordinates is shorter than the {ship.type}."
@@ -100,7 +113,41 @@ class Player:
 			 f"The distance between the two coordinates is longer than the {ship.type}."
 			)
 			return False
-		#check if there is a ship already between coord1 and coord2
+		#Check if there is a ship already between coord1 and coord2
+		if coord1[0] == coord2[0] and int(coord1[1]) < int(coord2[1]):
+			for x in range(1, ship.length - 1):
+				if bool(player_board[coord1[0] + str(int(coord1[1]) + x)]) == True:
+					print(
+					 f"There is a ship in the path where you are trying to lay the {ship.type}."
+					)
+					return False
+		if coord1[0] == coord2[0] and int(coord1[1]) > int(coord2[1]):
+			for x in range(1, ship.length - 1):
+				if bool(player_board[coord2[0] + str(int(coord2[1]) + x)]) == True:
+					print(
+					 f"There is a ship in the path where you are trying to lay the {ship.type}."
+					)
+					return False
+		if coord1[0] != coord2[0] and letters_to_numbers[
+		  coord1[0]] < letters_to_numbers[coord2[0]]:
+			for x in range(1, ship.length - 1):
+				if bool(
+				  player_board[numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
+				               coord1[1]]) == True:
+					print(
+					 f"There is a ship in the path where you are trying to lay the {ship.type}."
+					)
+					return False
+		if coord1[0] != coord2[0] and letters_to_numbers[
+		  coord1[0]] > letters_to_numbers[coord2[0]]:
+			for x in range(1, ship.length - 1):
+				if bool(
+				  player_board[numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
+				               coord2[1]]) == True:
+					print(
+					 f"There is a ship in the path where you are trying to lay the {ship.type}."
+					)
+					return False
 		return True
 
 	def insert_coords_into_player_board(player_board, coord1, coord2, ship):
