@@ -3,8 +3,26 @@ class Player:
 	def __init__(self, player_number):
 		self.player_number = player_number
 
-	def attack(self):
-		print(f"Player {self.player_number}, your turn to attack.")
+	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships):
+		#Player inputs attack coordinate
+		attack_coord = input(
+		 f"Player {self.player_number}, your turn to attack. Enter your attack coordinate: "
+		).upper().strip()
+		attack_coord_valid = Player.check_attack_coord_validity(attack_coord, player_enemy_board)
+		while attack_coord_valid == False:
+			attack_coord = input("Try again: ").upper().strip()
+			attack_coord_valid = Player.check_attack_coord_validity(attack_coord, player_enemy_board)
+		#Checks attack coord result
+		attack_coord_hit = Player.check_attack_coord_hit(attack_coord, enemy_ships_board)
+
+		if attack_coord_hit == True:
+			pass
+		if attack_coord_hit == False:
+			enemy_ships_board[attack_coord] = 'O'
+			player_enemy_board[attack_coord] = 'O'
+
+		#if bool(enemy_ships_board[attack_coord]) == True then enemy_ships_board[attack_coord] = 'X'
+		#if bool(enemy_ships_board[attack_coord]) == False then enemy_ships_board[attack_coord] = 'O'
 
 		#A shot is recorded on the enemy's ships board.
 		#If it is a hit, them an X is recorded; a miss, a O.
@@ -12,7 +30,6 @@ class Player:
 		#Also, if it is a hit, then an X is marked on the ship location array.
 		#If a ships location array is full of Xs, then it is sunk.
 		#The game ends when all ships of a player are sunk.
-		#Objects needed: self, player_enemy_board, enemy_ships_board, ships_array
 
 	def place_ships(self, board, ships):
 		print(f"Player {self.player_number}, please place your ships.")
@@ -22,6 +39,27 @@ class Player:
 			Player.insert_coords_into_player_board(board.player_board, coord1, coord2,
 			                                       ship)
 			board.display_board(board.player_board)
+
+	def check_attack_coord_validity(coord, player_enemy_board):
+		#Checks if the coord entered is a valid letter/number combo
+		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+		coord_letter = coord[0]
+		coord_number = coord[1:]
+		if coord_letter not in letters or coord_number not in numbers:
+			print("You did not enter a valid coordinate.")
+			return False
+		if player_enemy_board[coord] == 'X' or player_enemy_board[coord] == 'O':
+			print("You already attacked at this coordinate before.")
+			return False
+		return True
+
+	def check_attack_coord_hit(attack_coord, enemy_ships_board):
+		if bool(enemy_ships_board[attack_coord]) == True:
+			print(f"{attack_coord} is a hit!")
+			return True
+		print(f"{attack_coord} is a miss.")
+		return False
 
 	def input_coords(ship, player_board):
 		coord1 = input(
