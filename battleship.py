@@ -6,19 +6,7 @@ import ship
 class Battleship:
 
 	def __init__(self):
-		print("""
-///////////////////////////////////////////////////////////////////////////////
-
-BBBBBB   AAAAA  TTTTTTT TTTTTTT L       EEEEEEE SSSSSSS H     H IIIIIII PPPPPP
-B     B A     A    T       T    L       E       S       H     H    I    P     P
-B     B A     A    T       T    L       E       S       H     H    I    P     P
-BBBBBB  AAAAAAA    T       T    L       EEEEEE  SSSSSSS HHHHHHH    I    PPPPPP
-B     B A     A    T       T    L       E             S H     H    I    P
-B     B A     A    T       T    L       E             S H     H    I    P
-BBBBBB  A     A    T       T    LLLLLLL EEEEEEE SSSSSSS H     H IIIIIII P
-
-///////////////////////////////////////////////////////////////////////////////
-""")
+		Battleship.print_game_title()
 		self.num_players = input("Select the number of players. Enter 1 or 2: ")
 		print()
 		while self.num_players != '1' and self.num_players != '2':
@@ -31,6 +19,7 @@ BBBBBB  A     A    T       T    LLLLLLL EEEEEEE SSSSSSS H     H IIIIIII P
 		print("This game mode still needs to be built.")
 
 	def two_player_game(self):
+		#Initializing the objects for the game
 		player1 = player.Player(1)
 		player2 = player.Player(2)
 		board1 = board.Board()
@@ -49,6 +38,21 @@ BBBBBB  A     A    T       T    LLLLLLL EEEEEEE SSSSSSS H     H IIIIIII P
 		ships2 = [carrier2, battleship2, cruiser2, submarine2, destroyer2]
 
 		player1.place_ships(board1, ships1)
-		# input("Hit enter to begin ship placement for player two.")
-		# print()
-		# player2.place_ships(board2, ships2)
+		input("Hit enter to begin ship placement for player two.")
+		print()
+		player2.place_ships(board2, ships2)
+
+	def print_game_title():
+		print("""
+///////////////////////////////////////////////////////////////////////////////
+
+BBBBBB   AAAAA  TTTTTTT TTTTTTT L       EEEEEEE SSSSSSS H     H IIIIIII PPPPPP
+B     B A     A    T       T    L       E       S       H     H    I    P     P
+B     B A     A    T       T    L       E       S       H     H    I    P     P
+BBBBBB  AAAAAAA    T       T    L       EEEEEE  SSSSSSS HHHHHHH    I    PPPPPP
+B     B A     A    T       T    L       E             S H     H    I    P
+B     B A     A    T       T    L       E             S H     H    I    P
+BBBBBB  A     A    T       T    LLLLLLL EEEEEEE SSSSSSS H     H IIIIIII P
+
+///////////////////////////////////////////////////////////////////////////////
+""")
