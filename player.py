@@ -14,22 +14,14 @@ class Player:
 			attack_coord_valid = Player.check_attack_coord_validity(attack_coord, player_enemy_board)
 		#Checks attack coord result
 		attack_coord_hit = Player.check_attack_coord_hit(attack_coord, enemy_ships_board)
-
+		#Applies attack coord result to the player boards (and ship if a hit)
 		if attack_coord_hit == True:
-			pass
+			enemy_ships_board[attack_coord] = 'X'
+			player_enemy_board[attack_coord] = 'X'
+			#Need to mark an 'X' in the ship location array
 		if attack_coord_hit == False:
 			enemy_ships_board[attack_coord] = 'O'
 			player_enemy_board[attack_coord] = 'O'
-
-		#if bool(enemy_ships_board[attack_coord]) == True then enemy_ships_board[attack_coord] = 'X'
-		#if bool(enemy_ships_board[attack_coord]) == False then enemy_ships_board[attack_coord] = 'O'
-
-		#A shot is recorded on the enemy's ships board.
-		#If it is a hit, them an X is recorded; a miss, a O.
-		#The corresponding shot gets recorded on the player's enemy board.
-		#Also, if it is a hit, then an X is marked on the ship location array.
-		#If a ships location array is full of Xs, then it is sunk.
-		#The game ends when all ships of a player are sunk.
 
 	def place_ships(self, board, ships):
 		print(f"Player {self.player_number}, please place your ships.")
@@ -221,21 +213,33 @@ class Player:
 		 9: 'I',
 		 10: 'J'
 		}
+		#Inputs ship symbols into coord1 and coord2
 		player_board[coord1] = ship.symbol
 		player_board[coord2] = ship.symbol
+		#Inputs coord1 and coord2 into ship location array
+		ship.location.append(coord1)
+		ship.location.append(coord2)
+		#Fills in the coordinates between coord1 and coord2 with ship symbols
+		#and also inputs them into the ship location array
 		if coord1[0] == coord2[0] and int(coord1[1:]) < int(coord2[1:]):
 			for x in range(1, ship.length - 1):
 				player_board[coord1[0] + str(int(coord1[1:]) + x)] = ship.symbol
+				ship.location.append(coord1[0] + str(int(coord1[1:]) + x))
 		if coord1[0] == coord2[0] and int(coord1[1:]) > int(coord2[1:]):
 			for x in range(1, ship.length - 1):
 				player_board[coord2[0] + str(int(coord2[1:]) + x)] = ship.symbol
+				ship.location.append(coord2[0] + str(int(coord2[1:]) + x))
 		if coord1[0] != coord2[0] and letters_to_numbers[
 		  coord1[0]] < letters_to_numbers[coord2[0]]:
 			for x in range(1, ship.length - 1):
 				player_board[numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
 				             coord1[1:]] = ship.symbol
+				ship.location.append(numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
+				             coord1[1:])
 		if coord1[0] != coord2[0] and letters_to_numbers[
 		  coord1[0]] > letters_to_numbers[coord2[0]]:
 			for x in range(1, ship.length - 1):
 				player_board[numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
 				             coord2[1:]] = ship.symbol
+				ship.location.append(numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
+				             coord2[1:])
