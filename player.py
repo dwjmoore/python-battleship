@@ -18,7 +18,7 @@ class Player:
 		if attack_coord_hit == True:
 			enemy_ships_board[attack_coord] = 'X'
 			player_enemy_board[attack_coord] = 'X'
-			#Need to mark an 'X' in the ship location array
+			Player.add_X_to_ship(attack_coord, enemy_ships)
 		if attack_coord_hit == False:
 			enemy_ships_board[attack_coord] = 'O'
 			player_enemy_board[attack_coord] = 'O'
@@ -53,6 +53,12 @@ class Player:
 		print(f"{attack_coord} is a miss.")
 		return False
 
+	def add_X_to_ship(attack_coord, enemy_ships):
+		for ship in enemy_ships:
+			for coord in ship:
+				if coord == attack_coord:
+					ship[ship.index(attack_coord)] = 'X'
+					
 	def input_coords(ship, player_board):
 		coord1 = input(
 		 f"Where would you like to place one end of your {ship.type}? Enter one coordinate. For example, C3 or D10: "
