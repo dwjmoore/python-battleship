@@ -38,6 +38,9 @@ class Player:
 			board.display_board(board.player_board)
 
 	def check_attack_coord_validity(coord, player_enemy_board):
+		if bool(coord) == False:
+			print("You did not enter a valid coordinate.")
+			return False
 		#Checks if the coord entered is a valid letter/number combo
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -90,6 +93,9 @@ class Player:
 
 	def check_coord1_validity(coord1, player_board):
 		#Checks if the coord entered is a valid letter/number combo
+		if bool(coord1) == False:
+			print("You did not enter a valid coordinate.")
+			return False
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 		coord_letter = coord1[0]
@@ -104,6 +110,9 @@ class Player:
 		return True
 
 	def check_coord2_validity(coord1, coord2, player_board, ship):
+		if bool(coord2) == False:
+			print("You did not enter a valid coordinate.")
+			return False
 		letters_to_numbers = {
 		 'A': 1,
 		 'B': 2,
