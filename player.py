@@ -55,9 +55,9 @@ class Player:
 
 	def add_X_to_ship(attack_coord, enemy_ships):
 		for ship in enemy_ships:
-			for coord in ship:
+			for coord in ship.location:
 				if coord == attack_coord:
-					ship[ship.index(attack_coord)] = 'X'
+					ship.location[ship.location.index(attack_coord)] = 'X'
 					
 	def input_coords(ship, player_board):
 		coord1 = input(
