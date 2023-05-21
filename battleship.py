@@ -1,4 +1,5 @@
 import player
+import computer
 import board
 import ship
 
@@ -18,6 +19,22 @@ class Battleship:
 	def one_player_game(self):
 		print("This game mode still needs to be built.")
 		#Initializing the objects for the game
+		player1 = player.Player(1)
+		player2 = computer.Computer()
+		board1 = board.Board()
+		board2 = board.Board()
+		carrier1 = ship.Ship('carrier')
+		battleship1 = ship.Ship('battleship')
+		cruiser1 = ship.Ship('cruiser')
+		submarine1 = ship.Ship('submarine')
+		destroyer1 = ship.Ship('destroyer')
+		ships1 = [carrier1, battleship1, cruiser1, submarine1, destroyer1]
+		carrier2 = ship.Ship('carrier')
+		battleship2 = ship.Ship('battleship')
+		cruiser2 = ship.Ship('cruiser')
+		submarine2 = ship.Ship('submarine')
+		destroyer2 = ship.Ship('destroyer')
+		ships2 = [carrier2, battleship2, cruiser2, submarine2, destroyer2]
 		#Players place their ships
 		#Main game loop
 			#Player 1 turn
