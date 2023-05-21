@@ -39,6 +39,7 @@ class Battleship:
 
 		#Players place their ships
 		player1.place_ships(board1, ships1)
+		Battleship.print_spacer()
 		input("Hit enter to begin ship placement for player two.")
 		print()
 		player2.place_ships(board2, ships2)
@@ -46,9 +47,24 @@ class Battleship:
 		#Players take turns guessing where their enemy's ships are
 		game_on = True
 		while game_on == True:
-			player1.attack()
-			player2.attack()
-			game_on = False
+			Battleship.print_spacer()
+			input("Hit enter to begin Player 1's attack phase.")
+			print()
+			board1.display_board(board1.enemy_board)
+			board1.display_board(board1.player_board)
+			player1.attack(board2.player_board, board1.enemy_board, ships2)
+			input("Hit enter to continue.")
+			print()
+			Battleship.print_spacer()
+			input("Hit enter to begin Player 2's attack phase.")
+			print()
+			board2.display_board(board2.enemy_board)
+			board2.display_board(board2.player_board)
+			player2.attack(board1.player_board, board2.enemy_board, ships1)
+			input("Hit enter to continue.")
+			print()
+			#Need to check if a ship is sunk
+			#Need to check if all ships are sunk
 
 	def print_game_title():
 		print("""
@@ -64,3 +80,7 @@ BBBBBB  A     A    T       T    LLLLLLL EEEEEEE SSSSSSS H     H IIIIIII P
 
 ///////////////////////////////////////////////////////////////////////////////
 """)
+
+	def print_spacer():
+		for x in range(50):
+			print()
