@@ -24,5 +24,6 @@ class Ship:
 			if self.location[x] == 'X':
 				hit_count += 1
 		if hit_count == self.length:
+			print(f"You sunk your opponent's {self.type}.")
 			return True
 		return False

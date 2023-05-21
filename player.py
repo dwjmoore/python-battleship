@@ -18,7 +18,7 @@ class Player:
 		if attack_coord_hit == True:
 			enemy_ships_board[attack_coord] = 'X'
 			player_enemy_board[attack_coord] = 'X'
-			Player.add_X_to_ship(attack_coord, enemy_ships)
+			Player.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships)
 		if attack_coord_hit == False:
 			enemy_ships_board[attack_coord] = 'O'
 			player_enemy_board[attack_coord] = 'O'
@@ -53,11 +53,12 @@ class Player:
 		print(f"{attack_coord} is a miss.")
 		return False
 
-	def add_X_to_ship(attack_coord, enemy_ships):
+	def add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships):
 		for ship in enemy_ships:
 			for coord in ship.location:
 				if coord == attack_coord:
 					ship.location[ship.location.index(attack_coord)] = 'X'
+					ship.check_if_sunk()
 					
 	def input_coords(ship, player_board):
 		coord1 = input(

@@ -47,6 +47,7 @@ class Battleship:
 		#Players take turns guessing where their enemy's ships are
 		game_on = True
 		while game_on == True:
+			#Player 1 turn
 			Battleship.print_spacer()
 			input("Hit enter to begin Player 1's attack phase.")
 			print()
@@ -55,6 +56,7 @@ class Battleship:
 			player1.attack(board2.player_board, board1.enemy_board, ships2)
 			input("Hit enter to continue.")
 			print()
+			#Player 2 turn
 			Battleship.print_spacer()
 			input("Hit enter to begin Player 2's attack phase.")
 			print()
