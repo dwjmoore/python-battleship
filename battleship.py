@@ -17,6 +17,13 @@ class Battleship:
 
 	def one_player_game(self):
 		print("This game mode still needs to be built.")
+		#Initializing the objects for the game
+		#Players place their ships
+		#Main game loop
+			#Player 1 turn
+			#Win condition for Player 1 win
+			#Computer turn
+			#Win condition for Computer win
 
 	def two_player_game(self):
 		#Initializing the objects for the game
