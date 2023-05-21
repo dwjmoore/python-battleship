@@ -56,7 +56,7 @@ class Computer:
 			for coord in ship.location:
 				if coord == attack_coord:
 					ship.location[ship.location.index(attack_coord)] = 'X'
-					if ship.check_if_sunk() == True:
+					if ship.check_if_sunk(enemy_player) == True:
 						enemy_player.sunk_ships += 1
 
 	def input_coords(ship, player_board):

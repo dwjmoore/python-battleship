@@ -19,12 +19,12 @@ class Ship:
 			self.symbol = 'D'
 		self.location = []
 
-	def check_if_sunk(self):
+	def check_if_sunk(self, enemy_player):
 		hit_count = 0
 		for x in range(self.length):
 			if self.location[x] == 'X':
 				hit_count += 1
 		if hit_count == self.length:
-			print(f"You sunk your opponent's {self.type}.")
+			print(f"Player {enemy_player.player_number}'s {self.type} is sunk.")
 			return True
 		return False
