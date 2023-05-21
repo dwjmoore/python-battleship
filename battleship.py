@@ -42,8 +42,6 @@ class Battleship:
 		#Main game loop
 		while True:
 			#Player 1 turn
-			input("Hit enter to begin Player 1's attack phase.")
-			print()
 			print("-------------------------------- Player 1 Board --------------------------------")
 			board1.display_board(board1.player_board)
 			print("-------------------------------- Player 1 Radar --------------------------------")
@@ -55,8 +53,6 @@ class Battleship:
 				 f"All of Player {player2.player_number}'s ships are sunk. Player {player1.player_number} wins!"
 				)
 				break
-			input("Hit enter to continue.")
-			print()
 			#Player 2 turn
 			player2.attack(board1.player_board, board2.enemy_board, ships1, player1)
 			#Win condition for player 2 win

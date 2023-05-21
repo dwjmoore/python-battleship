@@ -9,14 +9,16 @@ class Computer:
 
 	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships,
 	           enemy_player):
-		#Player inputs attack coordinate
-		attack_coord = input(
-		 f"Player {self.player_number}, your turn to attack. Enter your attack coordinate: "
-		).upper().strip()
+		print("Player 2 attacks:")
+		#Computer inputs attack coordinate
+		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+		attack_coord = (random.choice(letters) + random.choice(numbers)).strip()
+		#Checks if attack coord is valid
 		attack_coord_valid = Computer.check_attack_coord_validity(
 		 attack_coord, player_enemy_board)
 		while attack_coord_valid == False:
-			attack_coord = input("Try again: ").upper().strip()
+			attack_coord = (random.choice(letters) + random.choice(numbers)).strip()
 			attack_coord_valid = Computer.check_attack_coord_validity(
 			 attack_coord, player_enemy_board)
 		#Checks attack coord result
