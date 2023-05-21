@@ -44,29 +44,44 @@ class Battleship:
 		print()
 		player2.place_ships(board2, ships2)
 
-		#Players take turns guessing where their enemy's ships are
-		game_on = True
-		while game_on == True:
+		#Main game loop
+		while True:
 			#Player 1 turn
 			Battleship.print_spacer()
 			input("Hit enter to begin Player 1's attack phase.")
 			print()
-			board1.display_board(board1.enemy_board)
+			print("-------------------------------- Player 1 Board --------------------------------")
 			board1.display_board(board1.player_board)
-			player1.attack(board2.player_board, board1.enemy_board, ships2)
+			print("-------------------------------- Player 1 Radar --------------------------------")
+			board1.display_board(board1.enemy_board)
+			player1.attack(board2.player_board, board1.enemy_board, ships2, player2)
+			#Win condition for Player 1 win
+			if player2.sunk_ships == 5:
+				print(
+				 f"All of Player {player2.player_number}'s ships are sunk. Player {player1.player_number} wins!"
+				)
+				break
 			input("Hit enter to continue.")
 			print()
 			#Player 2 turn
 			Battleship.print_spacer()
 			input("Hit enter to begin Player 2's attack phase.")
 			print()
-			board2.display_board(board2.enemy_board)
+			print("-------------------------------- Player 2 Board --------------------------------")
 			board2.display_board(board2.player_board)
-			player2.attack(board1.player_board, board2.enemy_board, ships1)
+			print("-------------------------------- Player 2 Radar --------------------------------")
+			board2.display_board(board2.enemy_board)
+			player2.attack(board1.player_board, board2.enemy_board, ships1, player1)
+			#Win condition for player 2 win
+			if player1.sunk_ships == 5:
+				print(
+				 f"All of Player {player1.player_number}'s ships are sunk. Player {player2.player_number} wins!"
+				)
+				break
 			input("Hit enter to continue.")
 			print()
-			#Need to check if a ship is sunk
-			#Need to check if all ships are sunk
+		print()
+		print("Thank you for playing. Goodbye!")
 
 	def print_game_title():
 		print("""

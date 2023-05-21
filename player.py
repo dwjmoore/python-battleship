@@ -2,23 +2,28 @@ class Player:
 
 	def __init__(self, player_number):
 		self.player_number = player_number
+		self.sunk_ships = 0
 
-	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships):
+	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships,
+	           enemy_player):
 		#Player inputs attack coordinate
 		attack_coord = input(
 		 f"Player {self.player_number}, your turn to attack. Enter your attack coordinate: "
 		).upper().strip()
-		attack_coord_valid = Player.check_attack_coord_validity(attack_coord, player_enemy_board)
+		attack_coord_valid = Player.check_attack_coord_validity(
+		 attack_coord, player_enemy_board)
 		while attack_coord_valid == False:
 			attack_coord = input("Try again: ").upper().strip()
-			attack_coord_valid = Player.check_attack_coord_validity(attack_coord, player_enemy_board)
+			attack_coord_valid = Player.check_attack_coord_validity(
+			 attack_coord, player_enemy_board)
 		#Checks attack coord result
-		attack_coord_hit = Player.check_attack_coord_hit(attack_coord, enemy_ships_board)
+		attack_coord_hit = Player.check_attack_coord_hit(attack_coord,
+		                                                 enemy_ships_board)
 		#Applies attack coord result to the player boards (and ship if a hit)
 		if attack_coord_hit == True:
 			enemy_ships_board[attack_coord] = 'X'
 			player_enemy_board[attack_coord] = 'X'
-			Player.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships)
+			Player.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships, enemy_player)
 		if attack_coord_hit == False:
 			enemy_ships_board[attack_coord] = 'O'
 			player_enemy_board[attack_coord] = 'O'
@@ -53,13 +58,14 @@ class Player:
 		print(f"{attack_coord} is a miss.")
 		return False
 
-	def add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships):
+	def add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships, enemy_player):
 		for ship in enemy_ships:
 			for coord in ship.location:
 				if coord == attack_coord:
 					ship.location[ship.location.index(attack_coord)] = 'X'
-					ship.check_if_sunk()
-					
+					if ship.check_if_sunk() == True:
+						enemy_player.sunk_ships += 1
+
 	def input_coords(ship, player_board):
 		coord1 = input(
 		 f"Where would you like to place one end of your {ship.type}? Enter one coordinate. For example, C3 or D10: "
@@ -241,12 +247,12 @@ class Player:
 			for x in range(1, ship.length - 1):
 				player_board[numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
 				             coord1[1:]] = ship.symbol
-				ship.location.append(numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
-				             coord1[1:])
+				ship.location.append(numbers_to_letters[letters_to_numbers[coord1[0]] +
+				                                        x] + coord1[1:])
 		if coord1[0] != coord2[0] and letters_to_numbers[
 		  coord1[0]] > letters_to_numbers[coord2[0]]:
 			for x in range(1, ship.length - 1):
 				player_board[numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
 				             coord2[1:]] = ship.symbol
-				ship.location.append(numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
-				             coord2[1:])
+				ship.location.append(numbers_to_letters[letters_to_numbers[coord2[0]] +
+				                                        x] + coord2[1:])

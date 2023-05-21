@@ -1,4 +1,5 @@
 class Ship:
+
 	def __init__(self, type):
 		self.type = type
 		if self.type == 'carrier':
