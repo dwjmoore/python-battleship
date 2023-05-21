@@ -18,5 +18,11 @@ class Ship:
 			self.symbol = 'D'
 		self.location = []
 
-	def take_a_hit(self):
-		pass
+	def check_if_sunk(self):
+		hit_count = 0
+		for x in range(self.length):
+			if self.location[x] == 'X':
+				hit_count += 1
+		if hit_count == self.length:
+			return True
+		return False
