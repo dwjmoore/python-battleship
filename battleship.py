@@ -17,7 +17,6 @@ class Battleship:
 			print()
 
 	def one_player_game(self):
-		print("This game mode still needs to be built.")
 		#Initializing the objects for the game
 		player1 = player.Player(1)
 		player2 = computer.Computer()
@@ -35,12 +34,41 @@ class Battleship:
 		submarine2 = ship.Ship('submarine')
 		destroyer2 = ship.Ship('destroyer')
 		ships2 = [carrier2, battleship2, cruiser2, submarine2, destroyer2]
+
 		#Players place their ships
+		player1.place_ships(board1, ships1)
+		player2.place_ships(board2, ships2)
+
 		#Main game loop
+		while True:
 			#Player 1 turn
+			input("Hit enter to begin Player 1's attack phase.")
+			print()
+			print("-------------------------------- Player 1 Board --------------------------------")
+			board1.display_board(board1.player_board)
+			print("-------------------------------- Player 1 Radar --------------------------------")
+			board1.display_board(board1.enemy_board)
+			player1.attack(board2.player_board, board1.enemy_board, ships2, player2)
 			#Win condition for Player 1 win
-			#Computer turn
-			#Win condition for Computer win
+			if player2.sunk_ships == 5:
+				print(
+				 f"All of Player {player2.player_number}'s ships are sunk. Player {player1.player_number} wins!"
+				)
+				break
+			input("Hit enter to continue.")
+			print()
+			#Player 2 turn
+			player2.attack(board1.player_board, board2.enemy_board, ships1, player1)
+			#Win condition for player 2 win
+			if player1.sunk_ships == 5:
+				print(
+				 f"All of Player {player1.player_number}'s ships are sunk. Player {player2.player_number} wins!"
+				)
+				break
+			input("Hit enter to continue.")
+			print()
+		print()
+		print("Thank you for playing. Goodbye!")
 
 	def two_player_game(self):
 		#Initializing the objects for the game
