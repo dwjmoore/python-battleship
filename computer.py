@@ -15,7 +15,6 @@ class Computer:
 	           enemy_player):
 		print("Player 2 attacks:")
 		self.attack_number += 1
-		print(f"Attack #{self.attack_number}")
 		#Computer inputs attack coordinate
 		attack_coord = Computer.get_attack_coord(self.attack_number,
 		                                         self.attack_hit_log,
@@ -63,11 +62,83 @@ class Computer:
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 		if attack_number == 1 or just_sunk_ship == True:
-			attack_coord = (random.choice(letters) + random.choice(numbers))
 			just_sunk_ship = False
-			return attack_coord
+			return (random.choice(letters) + random.choice(numbers))
 		if attack_number >= 2 and attack_hit_log[-1] == True:
-			pass
+			last_coord_letter = attack_coord_log[-1][0]
+			last_coord_number = int(attack_coord_log[-1][1:])
+			letters_to_numbers = {
+			 'A': 1,
+			 'B': 2,
+			 'C': 3,
+			 'D': 4,
+			 'E': 5,
+			 'F': 6,
+			 'G': 7,
+			 'H': 8,
+			 'I': 9,
+			 'J': 10
+			}
+			numbers_to_letters = {
+			 1: 'A',
+			 2: 'B',
+			 3: 'C',
+			 4: 'D',
+			 5: 'E',
+			 6: 'F',
+			 7: 'G',
+			 8: 'H',
+			 9: 'I',
+			 10: 'J'
+			}
+			attack_coord_options = []
+			#Gets attack coord option along the row
+			if last_coord_letter == 'A':
+				attack_coord_options.append('B' + str(last_coord_number))
+			elif last_coord_letter == 'J':
+				attack_coord_options.append('I' + str(last_coord_number))
+			else:
+				attack_coord_options.append(
+				 numbers_to_letters[letters_to_numbers[last_coord_letter] - 1] +
+				 str(last_coord_number))
+				attack_coord_options.append(
+				 numbers_to_letters[letters_to_numbers[last_coord_letter] + 1] +
+				 str(last_coord_number))
+				#Gets attack coord option along the column
+			if last_coord_number == 1:
+				attack_coord_options.append(last_coord_letter + str(last_coord_number + 1))
+			elif last_coord_number == 10:
+				attack_coord_options.append(last_coord_letter + str(last_coord_number - 1))
+			else:
+				attack_coord_options.append(last_coord_letter + str(last_coord_number - 1))
+				attack_coord_options.append(last_coord_letter + str(last_coord_number + 1))
+			#Selects random attack coord if surrounding coords already attacked
+			if len(attack_coord_options) == 2 and (
+			  player_enemy_board[attack_coord_options[0]] == 'X'
+			  or player_enemy_board[attack_coord_options[0]]
+			  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+			               or player_enemy_board[attack_coord_options[1]] == 'O'):
+				return (random.choice(letters) + random.choice(numbers))
+			if len(attack_coord_options) == 3 and (
+			  player_enemy_board[attack_coord_options[0]] == 'X'
+			  or player_enemy_board[attack_coord_options[0]]
+			  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+			               or player_enemy_board[attack_coord_options[1]] == 'O') and (
+			                player_enemy_board[attack_coord_options[2]] == 'X'
+			                or player_enemy_board[attack_coord_options[2]] == 'O'):
+				return (random.choice(letters) + random.choice(numbers))
+			if len(attack_coord_options) == 4 and (
+			  player_enemy_board[attack_coord_options[0]] == 'X'
+			  or player_enemy_board[attack_coord_options[0]]
+			  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+			               or player_enemy_board[attack_coord_options[1]] == 'O') and (
+			                player_enemy_board[attack_coord_options[2]] == 'X'
+			                or player_enemy_board[attack_coord_options[2]] == 'O') and (
+			                 player_enemy_board[attack_coord_options[3]] == 'X'
+			                 or player_enemy_board[attack_coord_options[3]] == 'O'):
+				return (random.choice(letters) + random.choice(numbers))
+			#Randonly gets attack coord from attack coord options list
+			return random.choice(attack_coord_options)
 		if attack_number >= 3 and attack_hit_log[-1] == False and attack_hit_log[
 		  -2] == True:
 			pass
@@ -80,8 +151,7 @@ class Computer:
 		if attack_number >= 4 and attack_hit_log[-1] == True and attack_hit_log[
 		  -2] == False and attack_hit_log[-3] == True:
 			pass
-		attack_coord = (random.choice(letters) + random.choice(numbers))
-		return attack_coord
+		return (random.choice(letters) + random.choice(numbers))
 
 	def check_attack_coord_validity(coord, player_enemy_board):
 		if player_enemy_board[coord] == 'X' or player_enemy_board[coord] == 'O':
