@@ -9,39 +9,30 @@ class Computer:
 		self.attack_coord_log = []
 		self.attack_hit_log = []
 		self.attack_number = 0
-		self.just_sunk_ship = False
+		self.just_sunk_ship = 0
 
 	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships,
 	           enemy_player):
 		print("Player 2 attacks:")
 		self.attack_number += 1
 		#Computer inputs attack coordinate
-		attack_coord = Computer.get_attack_coord(self.attack_number,
-		                                         self.attack_hit_log,
-		                                         self.attack_coord_log,
-		                                         self.just_sunk_ship,
-		                                         player_enemy_board)
+		attack_coord = self.get_attack_coord(player_enemy_board)
 		#Checks if attack coord is valid
-		attack_coord_valid = Computer.check_attack_coord_validity(
+		attack_coord_valid = self.check_attack_coord_validity(
 		 attack_coord, player_enemy_board)
 		while attack_coord_valid == False:
-			attack_coord = Computer.get_attack_coord(self.attack_number,
-			                                         self.attack_hit_log,
-			                                         self.attack_coord_log,
-			                                         self.just_sunk_ship,
-			                                         player_enemy_board)
-			attack_coord_valid = Computer.check_attack_coord_validity(
+			attack_coord = self.get_attack_coord(player_enemy_board)
+			attack_coord_valid = self.check_attack_coord_validity(
 			 attack_coord, player_enemy_board)
 		#Checks attack coord result
-		attack_coord_hit = Computer.check_attack_coord_hit(attack_coord,
+		attack_coord_hit = self.check_attack_coord_hit(attack_coord,
 		                                                   enemy_ships_board)
 		#Applies attack coord result to the player boards (and ship if a hit)
 		#Appends attack coord result to attack_coord_log and attack_hit_log
 		if attack_coord_hit == True:
 			enemy_ships_board[attack_coord] = 'X'
 			player_enemy_board[attack_coord] = 'X'
-			Computer.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships,
-			                                         enemy_player, self.just_sunk_ship)
+			self.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships, enemy_player)
 			self.attack_coord_log.append(attack_coord)
 			self.attack_hit_log.append(True)
 		if attack_coord_hit == False:
@@ -57,16 +48,15 @@ class Computer:
 			Computer.insert_coords_into_player_board(board.player_board, coord1, coord2,
 			                                         ship)
 
-	def get_attack_coord(attack_number, attack_hit_log, attack_coord_log,
-	                     just_sunk_ship, player_enemy_board):
+	def get_attack_coord(self, player_enemy_board):
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-		if attack_number == 1 or just_sunk_ship == True:
-			just_sunk_ship = False
+		if self.attack_number == 1 or self.just_sunk_ship == True:
+			self.just_sunk_ship = False
 			return (random.choice(letters) + random.choice(numbers))
-		if attack_number >= 2 and attack_hit_log[-1] == True:
-			last_coord_letter = attack_coord_log[-1][0]
-			last_coord_number = int(attack_coord_log[-1][1:])
+		if self.attack_number >= 2 and self.attack_hit_log[-1] == True:
+			last_coord_letter = self.attack_coord_log[-1][0]
+			last_coord_number = int(self.attack_coord_log[-1][1:])
 			letters_to_numbers = {
 			 'A': 1,
 			 'B': 2,
@@ -139,41 +129,43 @@ class Computer:
 				return (random.choice(letters) + random.choice(numbers))
 			#Randonly gets attack coord from attack coord options list
 			return random.choice(attack_coord_options)
-		if attack_number >= 3 and attack_hit_log[-1] == False and attack_hit_log[
-		  -2] == True:
+		if self.attack_number >= 3 and self.attack_hit_log[
+		  -1] == False and self.attack_hit_log[-2] == True:
 			pass
-		if attack_number >= 4 and attack_hit_log[-1] == False and attack_hit_log[
-		  -2] == False and attack_hit_log[-3] == True:
+		if self.attack_number >= 4 and self.attack_hit_log[
+		  -1] == False and self.attack_hit_log[-2] == False and self.attack_hit_log[
+		   -3] == True:
 			pass
-		if attack_number >= 5 and attack_hit_log[-1] == False and attack_hit_log[
-		  -2] == False and attack_hit_log[-3] == False and attack_hit_log[-4] == True:
+		if self.attack_number >= 5 and self.attack_hit_log[
+		  -1] == False and self.attack_hit_log[-2] == False and self.attack_hit_log[
+		   -3] == False and self.attack_hit_log[-4] == True:
 			pass
-		if attack_number >= 4 and attack_hit_log[-1] == True and attack_hit_log[
-		  -2] == False and attack_hit_log[-3] == True:
+		if self.attack_number >= 4 and self.attack_hit_log[
+		  -1] == True and self.attack_hit_log[-2] == False and self.attack_hit_log[
+		   -3] == True:
 			pass
 		return (random.choice(letters) + random.choice(numbers))
 
-	def check_attack_coord_validity(coord, player_enemy_board):
+	def check_attack_coord_validity(self, coord, player_enemy_board):
 		if player_enemy_board[coord] == 'X' or player_enemy_board[coord] == 'O':
 			return False
 		return True
 
-	def check_attack_coord_hit(attack_coord, enemy_ships_board):
+	def check_attack_coord_hit(self, attack_coord, enemy_ships_board):
 		if bool(enemy_ships_board[attack_coord]) == True:
 			print(f"{attack_coord} is a hit!")
 			return True
 		print(f"{attack_coord} is a miss.")
 		return False
 
-	def add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships, enemy_player,
-	                                    just_sunk_ship):
+	def add_X_to_ship_and_check_if_sunk(self, attack_coord, enemy_ships, enemy_player):
 		for ship in enemy_ships:
 			for coord in ship.location:
 				if coord == attack_coord:
 					ship.location[ship.location.index(attack_coord)] = 'X'
 					if ship.check_if_sunk(enemy_player) == True:
 						enemy_player.sunk_ships += 1
-						just_sunk_ship = True
+						self.just_sunk_ship = True
 
 	def input_coords(ship, player_board):
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
