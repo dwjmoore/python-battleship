@@ -9,7 +9,8 @@ class Computer:
 		self.attack_coord_log = []
 		self.attack_hit_log = []
 		self.attack_number = 0
-		self.just_sunk_ship = 0
+		self.just_sunk_ship = False
+		self.found_ship = False
 
 	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships,
 	           enemy_player):
@@ -26,13 +27,14 @@ class Computer:
 			 attack_coord, player_enemy_board)
 		#Checks attack coord result
 		attack_coord_hit = self.check_attack_coord_hit(attack_coord,
-		                                                   enemy_ships_board)
+		                                               enemy_ships_board)
 		#Applies attack coord result to the player boards (and ship if a hit)
 		#Appends attack coord result to attack_coord_log and attack_hit_log
 		if attack_coord_hit == True:
 			enemy_ships_board[attack_coord] = 'X'
 			player_enemy_board[attack_coord] = 'X'
-			self.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships, enemy_player)
+			self.add_X_to_ship_and_check_if_sunk(attack_coord, enemy_ships,
+			                                     enemy_player)
 			self.attack_coord_log.append(attack_coord)
 			self.attack_hit_log.append(True)
 		if attack_coord_hit == False:
@@ -51,57 +53,59 @@ class Computer:
 	def get_attack_coord(self, player_enemy_board):
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+		letters_to_numbers = {
+		 'A': 1,
+		 'B': 2,
+		 'C': 3,
+		 'D': 4,
+		 'E': 5,
+		 'F': 6,
+		 'G': 7,
+		 'H': 8,
+		 'I': 9,
+		 'J': 10
+		}
+		numbers_to_letters = {
+		 1: 'A',
+		 2: 'B',
+		 3: 'C',
+		 4: 'D',
+		 5: 'E',
+		 6: 'F',
+		 7: 'G',
+		 8: 'H',
+		 9: 'I',
+		 10: 'J'
+		}
+		
 		if self.attack_number == 1 or self.just_sunk_ship == True:
 			self.just_sunk_ship = False
 			return (random.choice(letters) + random.choice(numbers))
+			
 		if self.attack_number >= 2 and self.attack_hit_log[-1] == True:
-			last_coord_letter = self.attack_coord_log[-1][0]
-			last_coord_number = int(self.attack_coord_log[-1][1:])
-			letters_to_numbers = {
-			 'A': 1,
-			 'B': 2,
-			 'C': 3,
-			 'D': 4,
-			 'E': 5,
-			 'F': 6,
-			 'G': 7,
-			 'H': 8,
-			 'I': 9,
-			 'J': 10
-			}
-			numbers_to_letters = {
-			 1: 'A',
-			 2: 'B',
-			 3: 'C',
-			 4: 'D',
-			 5: 'E',
-			 6: 'F',
-			 7: 'G',
-			 8: 'H',
-			 9: 'I',
-			 10: 'J'
-			}
+			last_hit_coord_letter = self.attack_coord_log[-1][0]
+			last_hit_coord_number = int(self.attack_coord_log[-1][1:])
 			attack_coord_options = []
 			#Gets attack coord option along the row
-			if last_coord_letter == 'A':
-				attack_coord_options.append('B' + str(last_coord_number))
-			elif last_coord_letter == 'J':
-				attack_coord_options.append('I' + str(last_coord_number))
+			if last_hit_coord_letter == 'A':
+				attack_coord_options.append('B' + str(last_hit_coord_number))
+			elif last_hit_coord_letter == 'J':
+				attack_coord_options.append('I' + str(last_hit_coord_number))
 			else:
 				attack_coord_options.append(
-				 numbers_to_letters[letters_to_numbers[last_coord_letter] - 1] +
-				 str(last_coord_number))
+				 numbers_to_letters[letters_to_numbers[last_hit_coord_letter] - 1] +
+				 str(last_hit_coord_number))
 				attack_coord_options.append(
-				 numbers_to_letters[letters_to_numbers[last_coord_letter] + 1] +
-				 str(last_coord_number))
+				 numbers_to_letters[letters_to_numbers[last_hit_coord_letter] + 1] +
+				 str(last_hit_coord_number))
 				#Gets attack coord option along the column
-			if last_coord_number == 1:
-				attack_coord_options.append(last_coord_letter + str(last_coord_number + 1))
-			elif last_coord_number == 10:
-				attack_coord_options.append(last_coord_letter + str(last_coord_number - 1))
+			if last_hit_coord_number == 1:
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number + 1))
+			elif last_hit_coord_number == 10:
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number - 1))
 			else:
-				attack_coord_options.append(last_coord_letter + str(last_coord_number - 1))
-				attack_coord_options.append(last_coord_letter + str(last_coord_number + 1))
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number - 1))
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number + 1))
 			#Selects random attack coord if surrounding coords already attacked
 			if len(attack_coord_options) == 2 and (
 			  player_enemy_board[attack_coord_options[0]] == 'X'
@@ -127,11 +131,62 @@ class Computer:
 			                 player_enemy_board[attack_coord_options[3]] == 'X'
 			                 or player_enemy_board[attack_coord_options[3]] == 'O'):
 				return (random.choice(letters) + random.choice(numbers))
-			#Randonly gets attack coord from attack coord options list
+			#Randomly gets attack coord from attack coord options list
 			return random.choice(attack_coord_options)
+
 		if self.attack_number >= 3 and self.attack_hit_log[
-		  -1] == False and self.attack_hit_log[-2] == True:
-			pass
+		  -1] == False and self.attack_hit_log[-2] == True and self.found_ship == True:
+			last_hit_coord_letter = self.attack_coord_log[-2][0]
+			last_hit_coord_number = int(self.attack_coord_log[-2][1:])
+			attack_coord_options = []
+			#Gets attack coord option along the row
+			if last_hit_coord_letter == 'A':
+				attack_coord_options.append('B' + str(last_hit_coord_number))
+			elif last_hit_coord_letter == 'J':
+				attack_coord_options.append('I' + str(last_hit_coord_number))
+			else:
+				attack_coord_options.append(
+				 numbers_to_letters[letters_to_numbers[last_hit_coord_letter] - 1] +
+				 str(last_hit_coord_number))
+				attack_coord_options.append(
+				 numbers_to_letters[letters_to_numbers[last_hit_coord_letter] + 1] +
+				 str(last_hit_coord_number))
+			#Gets attack coord option along the column
+			if last_hit_coord_number == 1:
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number + 1))
+			elif last_hit_coord_number == 10:
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number - 1))
+			else:
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number - 1))
+				attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number + 1))
+			#Selects random attack coord if surrounding coords already attacked
+			if len(attack_coord_options) == 2 and (
+			  player_enemy_board[attack_coord_options[0]] == 'X'
+			  or player_enemy_board[attack_coord_options[0]]
+			  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+			               or player_enemy_board[attack_coord_options[1]] == 'O'):
+				return (random.choice(letters) + random.choice(numbers))
+			if len(attack_coord_options) == 3 and (
+			  player_enemy_board[attack_coord_options[0]] == 'X'
+			  or player_enemy_board[attack_coord_options[0]]
+			  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+			               or player_enemy_board[attack_coord_options[1]] == 'O') and (
+			                player_enemy_board[attack_coord_options[2]] == 'X'
+			                or player_enemy_board[attack_coord_options[2]] == 'O'):
+				return (random.choice(letters) + random.choice(numbers))
+			if len(attack_coord_options) == 4 and (
+			  player_enemy_board[attack_coord_options[0]] == 'X'
+			  or player_enemy_board[attack_coord_options[0]]
+			  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+			               or player_enemy_board[attack_coord_options[1]] == 'O') and (
+			                player_enemy_board[attack_coord_options[2]] == 'X'
+			                or player_enemy_board[attack_coord_options[2]] == 'O') and (
+			                 player_enemy_board[attack_coord_options[3]] == 'X'
+			                 or player_enemy_board[attack_coord_options[3]] == 'O'):
+				return (random.choice(letters) + random.choice(numbers))
+			#Randomly gets attack coord from attack coord options list
+			return random.choice(attack_coord_options)
+
 		if self.attack_number >= 4 and self.attack_hit_log[
 		  -1] == False and self.attack_hit_log[-2] == False and self.attack_hit_log[
 		   -3] == True:
@@ -154,11 +209,13 @@ class Computer:
 	def check_attack_coord_hit(self, attack_coord, enemy_ships_board):
 		if bool(enemy_ships_board[attack_coord]) == True:
 			print(f"{attack_coord} is a hit!")
+			self.found_ship = True
 			return True
 		print(f"{attack_coord} is a miss.")
 		return False
 
-	def add_X_to_ship_and_check_if_sunk(self, attack_coord, enemy_ships, enemy_player):
+	def add_X_to_ship_and_check_if_sunk(self, attack_coord, enemy_ships,
+	                                    enemy_player):
 		for ship in enemy_ships:
 			for coord in ship.location:
 				if coord == attack_coord:
@@ -166,6 +223,7 @@ class Computer:
 					if ship.check_if_sunk(enemy_player) == True:
 						enemy_player.sunk_ships += 1
 						self.just_sunk_ship = True
+						self.found_ship = False
 
 	def input_coords(ship, player_board):
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
