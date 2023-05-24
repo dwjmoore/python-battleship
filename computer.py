@@ -12,7 +12,8 @@ class Computer:
 		self.just_sunk_ship = False
 		self.found_ship = False
 
-	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships, enemy_player):
+	def attack(self, enemy_ships_board, player_enemy_board, enemy_ships,
+	           enemy_player):
 		print("Player 2 attacks:")
 		self.attack_number += 1
 		#Computer inputs attack coordinate
@@ -52,14 +53,16 @@ class Computer:
 	def get_attack_coord(self, player_enemy_board):
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
 		if self.attack_number == 1 or self.just_sunk_ship == True:
 			self.just_sunk_ship = False
 			return (random.choice(letters) + random.choice(numbers))
-
-		if self.attack_number >= 3 and self.attack_hit_log[-1] == True and self.attack_hit_log[-2] == True and self.found_ship == True:
+		if self.attack_number >= 4 and self.attack_hit_log[
+		  -1] == False and self.attack_hit_log[-2] == True and self.attack_hit_log[
+		   -3] == True and self.found_ship == True:
+			return self.get_attack_coord_after_two_hits_then_miss(player_enemy_board)
+		if self.attack_number >= 3 and self.attack_hit_log[
+		  -1] == True and self.attack_hit_log[-2] == True and self.found_ship == True:
 			return self.get_attack_coord_after_two_hits()
-
 		if self.attack_number >= 2 and self.attack_hit_log[-1] == True:
 			return self.get_attack_coord_after_hit(-1, player_enemy_board)
 		if self.attack_number >= 3 and self.attack_hit_log[
@@ -89,7 +92,8 @@ class Computer:
 		print(f"{attack_coord} is a miss.")
 		return False
 
-	def add_X_to_ship_and_check_if_sunk(self, attack_coord, enemy_ships, enemy_player):
+	def add_X_to_ship_and_check_if_sunk(self, attack_coord, enemy_ships,
+	                                    enemy_player):
 		for ship in enemy_ships:
 			for coord in ship.location:
 				if coord == attack_coord:
@@ -181,7 +185,7 @@ class Computer:
 				ship.location.append(coord2[0] + str(int(coord2[1:]) + x))
 		if coord1[0] != coord2[0] and coord1[0] < coord2[0]:
 			for x in range(1, ship.length - 1):
-				player_board[chr(ord(coord1[0])+ x) + coord1[1:]] = ship.symbol
+				player_board[chr(ord(coord1[0]) + x) + coord1[1:]] = ship.symbol
 				ship.location.append(chr(ord(coord1[0]) + x) + coord1[1:])
 		if coord1[0] != coord2[0] and coord1[0] > coord2[0]:
 			for x in range(1, ship.length - 1):
@@ -200,40 +204,46 @@ class Computer:
 		elif last_hit_coord_letter == 'J':
 			attack_coord_options.append('I' + str(last_hit_coord_number))
 		else:
-			attack_coord_options.append(chr(ord(last_hit_coord_letter) - 1) + str(last_hit_coord_number))
-			attack_coord_options.append(chr(ord(last_hit_coord_letter) + 1) + str(last_hit_coord_number))
+			attack_coord_options.append(
+			 chr(ord(last_hit_coord_letter) - 1) + str(last_hit_coord_number))
+			attack_coord_options.append(
+			 chr(ord(last_hit_coord_letter) + 1) + str(last_hit_coord_number))
 		#Gets attack coord option along the column
 		if last_hit_coord_number == 1:
-			attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number + 1))
+			attack_coord_options.append(last_hit_coord_letter +
+			                            str(last_hit_coord_number + 1))
 		elif last_hit_coord_number == 10:
-			attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number - 1))
+			attack_coord_options.append(last_hit_coord_letter +
+			                            str(last_hit_coord_number - 1))
 		else:
-			attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number - 1))
-			attack_coord_options.append(last_hit_coord_letter + str(last_hit_coord_number + 1))
+			attack_coord_options.append(last_hit_coord_letter +
+			                            str(last_hit_coord_number - 1))
+			attack_coord_options.append(last_hit_coord_letter +
+			                            str(last_hit_coord_number + 1))
 		#Selects random attack coord if surrounding coords already attacked
 		if len(attack_coord_options) == 2 and (
-			player_enemy_board[attack_coord_options[0]] == 'X'
-			or player_enemy_board[attack_coord_options[0]]
-			== 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
-									 or player_enemy_board[attack_coord_options[1]] == 'O'):
+		  player_enemy_board[attack_coord_options[0]] == 'X'
+		  or player_enemy_board[attack_coord_options[0]]
+		  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+		               or player_enemy_board[attack_coord_options[1]] == 'O'):
 			return (random.choice(letters) + random.choice(numbers))
 		if len(attack_coord_options) == 3 and (
-			player_enemy_board[attack_coord_options[0]] == 'X'
-			or player_enemy_board[attack_coord_options[0]]
-			== 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
-									 or player_enemy_board[attack_coord_options[1]] == 'O') and (
-										player_enemy_board[attack_coord_options[2]] == 'X'
-										or player_enemy_board[attack_coord_options[2]] == 'O'):
+		  player_enemy_board[attack_coord_options[0]] == 'X'
+		  or player_enemy_board[attack_coord_options[0]]
+		  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+		               or player_enemy_board[attack_coord_options[1]] == 'O') and (
+		                player_enemy_board[attack_coord_options[2]] == 'X'
+		                or player_enemy_board[attack_coord_options[2]] == 'O'):
 			return (random.choice(letters) + random.choice(numbers))
 		if len(attack_coord_options) == 4 and (
-			player_enemy_board[attack_coord_options[0]] == 'X'
-			or player_enemy_board[attack_coord_options[0]]
-			== 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
-									 or player_enemy_board[attack_coord_options[1]] == 'O') and (
-										player_enemy_board[attack_coord_options[2]] == 'X'
-										or player_enemy_board[attack_coord_options[2]] == 'O') and (
-										 player_enemy_board[attack_coord_options[3]] == 'X'
-										 or player_enemy_board[attack_coord_options[3]] == 'O'):
+		  player_enemy_board[attack_coord_options[0]] == 'X'
+		  or player_enemy_board[attack_coord_options[0]]
+		  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
+		               or player_enemy_board[attack_coord_options[1]] == 'O') and (
+		                player_enemy_board[attack_coord_options[2]] == 'X'
+		                or player_enemy_board[attack_coord_options[2]] == 'O') and (
+		                 player_enemy_board[attack_coord_options[3]] == 'X'
+		                 or player_enemy_board[attack_coord_options[3]] == 'O'):
 			return (random.choice(letters) + random.choice(numbers))
 		#Randomly gets attack coord from attack coord options list
 		return random.choice(attack_coord_options)
@@ -258,6 +268,76 @@ class Computer:
 			if second_hit_coord_letter == 'J':
 				return (chr(ord(first_hit_coord_letter) - 1) + str(first_hit_coord_number))
 			if first_hit_coord_letter > second_hit_coord_letter:
-				return (chr(ord(second_hit_coord_letter) - 1) + str(first_hit_coord_number))
+				return (chr(ord(second_hit_coord_letter) - 1) +
+				        str(first_hit_coord_number))
 			if first_hit_coord_letter < second_hit_coord_letter:
-				return (chr(ord(second_hit_coord_letter) + 1) + str(first_hit_coord_number))
+				return (chr(ord(second_hit_coord_letter) + 1) +
+				        str(first_hit_coord_number))
+
+	def get_attack_coord_after_two_hits_then_miss(self, player_enemy_board):
+		first_hit_coord_letter = self.attack_coord_log[-3][0]
+		first_hit_coord_number = int(self.attack_coord_log[-3][1:])
+		second_hit_coord_letter = self.attack_coord_log[-2][0]
+		second_hit_coord_number = int(self.attack_coord_log[-2][1:])
+		if first_hit_coord_letter == second_hit_coord_letter:
+			if first_hit_coord_number > second_hit_coord_number:
+				if player_enemy_board[
+				  first_hit_coord_letter +
+				  str(first_hit_coord_number + 1)] == 'X' or player_enemy_board[
+				   first_hit_coord_letter + str(first_hit_coord_number + 1)] == 'O':
+					if player_enemy_board[
+					  first_hit_coord_letter +
+					  str(first_hit_coord_number + 2)] == 'X' or player_enemy_board[
+					   first_hit_coord_letter + str(first_hit_coord_number + 2)] == 'O':
+						return (first_hit_coord_letter + str(first_hit_coord_number + 3))
+					return (first_hit_coord_letter + str(first_hit_coord_number + 2))
+				return (first_hit_coord_letter + str(first_hit_coord_number + 1))
+			if first_hit_coord_number < second_hit_coord_number:
+				if player_enemy_board[
+				  first_hit_coord_letter +
+				  str(first_hit_coord_number - 1)] == 'X' or player_enemy_board[
+				   first_hit_coord_letter + str(first_hit_coord_number - 1)] == 'O':
+					if player_enemy_board[
+					  first_hit_coord_letter +
+					  str(first_hit_coord_number - 2)] == 'X' or player_enemy_board[
+					   first_hit_coord_letter + str(first_hit_coord_number - 2)] == 'O':
+						return (first_hit_coord_letter + str(first_hit_coord_number - 3))
+					return (first_hit_coord_letter + str(first_hit_coord_number - 2))
+				return (first_hit_coord_letter + str(first_hit_coord_number - 1))
+		if first_hit_coord_number == second_hit_coord_number:
+			if first_hit_coord_letter > second_hit_coord_letter:
+				if player_enemy_board[
+				  chr(ord(first_hit_coord_letter) + 1) +
+				  str(first_hit_coord_number)] == 'X' or player_enemy_board[
+				   chr(ord(first_hit_coord_letter) + 1) +
+				   str(first_hit_coord_number)] == 'O':
+					if player_enemy_board[
+					  chr(ord(first_hit_coord_letter) + 2) +
+					  str(first_hit_coord_number)] == 'X' or player_enemy_board[
+					   chr(ord(first_hit_coord_letter) + 2) +
+					   str(first_hit_coord_number)] == 'O':
+						return (chr(ord(first_hit_coord_letter) + 3) +
+						        str(first_hit_coord_number))
+					return (chr(ord(first_hit_coord_letter) + 2) +
+					        str(first_hit_coord_number))
+				return (chr(ord(first_hit_coord_letter) + 1) + str(first_hit_coord_number))
+			if first_hit_coord_letter < second_hit_coord_letter:
+				if player_enemy_board[
+				  chr(ord(first_hit_coord_letter) - 1) +
+				  str(first_hit_coord_number)] == 'X' or player_enemy_board[
+				   chr(ord(first_hit_coord_letter) - 1) +
+				   str(first_hit_coord_number)] == 'O':
+					if player_enemy_board[
+					  chr(ord(first_hit_coord_letter) - 2) +
+					  str(first_hit_coord_number)] == 'X' or player_enemy_board[
+					   chr(ord(first_hit_coord_letter) - 2) +
+					   str(first_hit_coord_number)] == 'O':
+						return (chr(ord(first_hit_coord_letter) - 3) +
+						        str(first_hit_coord_number))
+					return (chr(ord(first_hit_coord_letter) - 2) +
+					        str(first_hit_coord_number))
+				return (chr(ord(first_hit_coord_letter) - 1) + str(first_hit_coord_number))
+
+	#Method for hit, miss, hit
+	#Method for hit, miss, miss, hit
+	#Method for hit, miss, miss, miss, hit
