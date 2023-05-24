@@ -163,30 +163,6 @@ class Computer:
 		return True
 
 	def insert_coords_into_player_board(player_board, coord1, coord2, ship):
-		letters_to_numbers = {
-		 'A': 1,
-		 'B': 2,
-		 'C': 3,
-		 'D': 4,
-		 'E': 5,
-		 'F': 6,
-		 'G': 7,
-		 'H': 8,
-		 'I': 9,
-		 'J': 10
-		}
-		numbers_to_letters = {
-		 1: 'A',
-		 2: 'B',
-		 3: 'C',
-		 4: 'D',
-		 5: 'E',
-		 6: 'F',
-		 7: 'G',
-		 8: 'H',
-		 9: 'I',
-		 10: 'J'
-		}
 		#Inputs ship symbols into coord1 and coord2
 		player_board[coord1] = ship.symbol
 		player_board[coord2] = ship.symbol
@@ -203,20 +179,14 @@ class Computer:
 			for x in range(1, ship.length - 1):
 				player_board[coord2[0] + str(int(coord2[1:]) + x)] = ship.symbol
 				ship.location.append(coord2[0] + str(int(coord2[1:]) + x))
-		if coord1[0] != coord2[0] and letters_to_numbers[
-		  coord1[0]] < letters_to_numbers[coord2[0]]:
+		if coord1[0] != coord2[0] and coord1[0] < coord2[0]:
 			for x in range(1, ship.length - 1):
-				player_board[numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
-				             coord1[1:]] = ship.symbol
-				ship.location.append(numbers_to_letters[letters_to_numbers[coord1[0]] +
-				                                        x] + coord1[1:])
-		if coord1[0] != coord2[0] and letters_to_numbers[
-		  coord1[0]] > letters_to_numbers[coord2[0]]:
+				player_board[chr(ord(coord1[0])+ x) + coord1[1:]] = ship.symbol
+				ship.location.append(chr(ord(coord1[0]) + x) + coord1[1:])
+		if coord1[0] != coord2[0] and coord1[0] > coord2[0]:
 			for x in range(1, ship.length - 1):
-				player_board[numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
-				             coord2[1:]] = ship.symbol
-				ship.location.append(numbers_to_letters[letters_to_numbers[coord2[0]] +
-				                                        x] + coord2[1:])
+				player_board[chr(ord(coord2[0]) + x) + coord2[1:]] = ship.symbol
+				ship.location.append(chr(ord(coord2[0]) + x) + coord2[1:])
 
 	def get_attack_coord_after_hit(self, element, player_enemy_board):
 		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
