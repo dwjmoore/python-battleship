@@ -125,30 +125,6 @@ class Computer:
 		return True
 
 	def check_coord2_validity(coord1, coord2, player_board, ship):
-		letters_to_numbers = {
-		 'A': 1,
-		 'B': 2,
-		 'C': 3,
-		 'D': 4,
-		 'E': 5,
-		 'F': 6,
-		 'G': 7,
-		 'H': 8,
-		 'I': 9,
-		 'J': 10
-		}
-		numbers_to_letters = {
-		 1: 'A',
-		 2: 'B',
-		 3: 'C',
-		 4: 'D',
-		 5: 'E',
-		 6: 'F',
-		 7: 'G',
-		 8: 'H',
-		 9: 'I',
-		 10: 'J'
-		}
 		#Checks if coord2 == coord1
 		if coord2 == coord1:
 			return False
@@ -162,8 +138,7 @@ class Computer:
 		if coord1[0] == coord2[0]:
 			coords_length = abs(int(coord1[1:]) - int(coord2[1:])) + 1
 		if coord1[0] != coord2[0]:
-			coords_length = abs(letters_to_numbers[coord1[0]] -
-			                    letters_to_numbers[coord2[0]]) + 1
+			coords_length = abs(ord(coord1[0]) - ord(coord2[0])) + 1
 		if coords_length < ship.length:
 			return False
 		if coords_length > ship.length:
@@ -177,19 +152,13 @@ class Computer:
 			for x in range(1, ship.length - 1):
 				if bool(player_board[coord2[0] + str(int(coord2[1:]) + x)]) == True:
 					return False
-		if coord1[0] != coord2[0] and letters_to_numbers[
-		  coord1[0]] < letters_to_numbers[coord2[0]]:
+		if coord1[0] != coord2[0] and coord1[0] < coord2[0]:
 			for x in range(1, ship.length - 1):
-				if bool(
-				  player_board[numbers_to_letters[letters_to_numbers[coord1[0]] + x] +
-				               coord1[1:]]) == True:
+				if bool(player_board[chr(ord(coord1[0]) + x) + coord1[1:]]) == True:
 					return False
-		if coord1[0] != coord2[0] and letters_to_numbers[
-		  coord1[0]] > letters_to_numbers[coord2[0]]:
+		if coord1[0] != coord2[0] and coord1[0] > coord2[0]:
 			for x in range(1, ship.length - 1):
-				if bool(
-				  player_board[numbers_to_letters[letters_to_numbers[coord2[0]] + x] +
-				               coord2[1:]]) == True:
+				if bool(player_board[chr(ord(coord2[0]) + x) + coord2[1:]]) == True:
 					return False
 		return True
 
