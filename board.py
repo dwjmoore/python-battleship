@@ -64,3 +64,15 @@ I	{I1}	|	{I2}	|	{I3}	|	{I4}	|	{I5}	|	{I6}	|	{I7}	|	{I8}	|	{I9}	|	{I10}
 J	{J1}	|	{J2}	|	{J3}	|	{J4}	|	{J5}	|	{J6}	|	{J7}	|	{J8}	|	{J9}	|	{J10}
 --------------------------------------------------------------------------------
 """)
+
+def insert_attack_result_into_board(self, attack_result, coord):
+	if attack_result == True:
+		self._player_board[coord] = 'X'
+	else:
+		self._player_board[coord] = 'O'
+
+def insert_attack_result_into_radar(self, attack_result, coord):
+	if attack_result == True:
+		self._player_radard[coord] = 'X'
+	else:
+		self._player_radard[coord] = 'O'
