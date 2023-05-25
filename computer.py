@@ -60,9 +60,23 @@ class Computer:
 		  -1] == False and self.attack_hit_log[-2] == True and self.attack_hit_log[
 		   -3] == True and self.found_ship == True:
 			return self.get_attack_coord_after_two_hits_then_miss(player_enemy_board)
+		if self.attack_number >= 6 and self.attack_hit_log[
+		  -1] == True and self.attack_hit_log[-2] == False and self.attack_hit_log[
+		   -3] == False and self.attack_hit_log[-4] == False and self.attack_hit_log[
+		    -5] == True and self.found_ship == True:
+			return self.get_attack_coord_after_two_hits_on_ship(-5, -1)
+		if self.attack_number >= 5 and self.attack_hit_log[
+		  -1] == True and self.attack_hit_log[-2] == False and self.attack_hit_log[
+		   -3] == False and self.attack_hit_log[
+		    -4] == True and self.found_ship == True:
+			return self.get_attack_coord_after_two_hits_on_ship(-4, -1)
+		if self.attack_number >= 4 and self.attack_hit_log[
+		  -1] == True and self.attack_hit_log[-2] == False and self.attack_hit_log[
+		   -3] == True and self.found_ship == True:
+			return self.get_attack_coord_after_two_hits_on_ship(-3, -1)
 		if self.attack_number >= 3 and self.attack_hit_log[
 		  -1] == True and self.attack_hit_log[-2] == True and self.found_ship == True:
-			return self.get_attack_coord_after_two_hits()
+			return self.get_attack_coord_after_two_hits_on_ship(-2, -1)
 		if self.attack_number >= 2 and self.attack_hit_log[-1] == True:
 			return self.get_attack_coord_after_hit(-1, player_enemy_board)
 		if self.attack_number >= 3 and self.attack_hit_log[
@@ -248,11 +262,11 @@ class Computer:
 		#Randomly gets attack coord from attack coord options list
 		return random.choice(attack_coord_options)
 
-	def get_attack_coord_after_two_hits(self):
-		first_hit_coord_letter = self.attack_coord_log[-2][0]
-		first_hit_coord_number = int(self.attack_coord_log[-2][1:])
-		second_hit_coord_letter = self.attack_coord_log[-1][0]
-		second_hit_coord_number = int(self.attack_coord_log[-1][1:])
+	def get_attack_coord_after_two_hits_on_ship(self, hit1, hit2):
+		first_hit_coord_letter = self.attack_coord_log[hit1][0]
+		first_hit_coord_number = int(self.attack_coord_log[hit1][1:])
+		second_hit_coord_letter = self.attack_coord_log[hit2][0]
+		second_hit_coord_number = int(self.attack_coord_log[hit2][1:])
 		if first_hit_coord_letter == second_hit_coord_letter:
 			if second_hit_coord_number == 1:
 				return (first_hit_coord_letter + str(first_hit_coord_number + 1))
@@ -337,7 +351,3 @@ class Computer:
 					return (chr(ord(first_hit_coord_letter) - 2) +
 					        str(first_hit_coord_number))
 				return (chr(ord(first_hit_coord_letter) - 1) + str(first_hit_coord_number))
-
-	#Method for hit, miss, hit
-	#Method for hit, miss, miss, hit
-	#Method for hit, miss, miss, miss, hit
