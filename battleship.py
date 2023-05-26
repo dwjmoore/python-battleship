@@ -18,8 +18,8 @@ class Battleship:
 
 	def one_player_game(self):
 		#Initializing the objects for the game
-		player1 = player.Player(1)
-		player2 = computer.Computer()
+		player1 = computer.Computer(1)
+		player2 = computer.Computer(2)
 		board1 = board.Board()
 		board2 = board.Board()
 		carrier1 = ship.Ship('carrier')
@@ -43,20 +43,20 @@ class Battleship:
 		while True:
 			#Player 1 turn
 			print("-------------------------------- Player 1 Board --------------------------------")
-			board1.display_board(board1.player_board)
-			print("-------------------------------- Player 1 Radar --------------------------------")
-			board1.display_board(board1.enemy_board)
-			player1.attack(board2.player_board, board1.enemy_board, ships2, player2)
+			board1.display_player_board()
+			print("-------------------------------- Player 2 Board --------------------------------")
+			board2.display_player_board()
+			player1.attack(board1, board2, ships2, player2)
 			#Win condition for Player 1 win
-			if player2.sunk_ships == 5:
+			if player2.get_sunk_ships() == 5:
 				print(
 				 f"All of Player {player2.player_number}'s ships are sunk. Player {player1.player_number} wins!"
 				)
 				break
 			#Player 2 turn
-			player2.attack(board1.player_board, board2.enemy_board, ships1, player1)
+			player2.attack(board2, board1, ships1, player1)
 			#Win condition for player 2 win
-			if player1.sunk_ships == 5:
+			if player1.get_sunk_ships() == 5:
 				print(
 				 f"All of Player {player1.player_number}'s ships are sunk. Player {player2.player_number} wins!"
 				)

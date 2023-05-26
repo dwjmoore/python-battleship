@@ -65,14 +65,46 @@ J	{J1}	|	{J2}	|	{J3}	|	{J4}	|	{J5}	|	{J6}	|	{J7}	|	{J8}	|	{J9}	|	{J10}
 --------------------------------------------------------------------------------
 """)
 
-def insert_attack_result_into_board(self, attack_result, coord):
-	if attack_result == True:
-		self._player_board[coord] = 'X'
-	else:
-		self._player_board[coord] = 'O'
+	def insert_attack_result_into_board(self, attack_result, coord):
+		if attack_result == True:
+			self._player_board[coord] = 'X'
+		else:
+			self._player_board[coord] = 'O'
+	
+	def insert_attack_result_into_radar(self, attack_result, coord):
+		if attack_result == True:
+			self._player_radar[coord] = 'X'
+		else:
+			self._player_radar[coord] = 'O'
 
-def insert_attack_result_into_radar(self, attack_result, coord):
-	if attack_result == True:
-		self._player_radard[coord] = 'X'
-	else:
-		self._player_radard[coord] = 'O'
+	def insert_placement_coords_into_board(self, coord1, coord2, ship):
+		#Inputs ship symbols into coord1 and coord2
+		self._player_board[coord1] = ship.get_ship_symbol()
+		self._player_board[coord2] = ship.get_ship_symbol()
+		#Inputs coord1 and coord2 into ship location array
+		ship.append_placement_coord_to_ship_location(coord1)
+		ship.append_placement_coord_to_ship_location(coord2)
+		#Fills in the coordinates between coord1 and coord2 with ship symbols
+		#and also inputs them into the ship location array
+		if coord1[0] == coord2[0] and int(coord1[1:]) < int(coord2[1:]):
+			for x in range(1, ship.get_ship_length() - 1):
+				self._player_board[coord1[0] + str(int(coord1[1:]) + x)] = ship.get_ship_symbol()
+				ship.append_placement_coord_to_ship_location(coord1[0] + str(int(coord1[1:]) + x))
+		if coord1[0] == coord2[0] and int(coord1[1:]) > int(coord2[1:]):
+			for x in range(1, ship.get_ship_length() - 1):
+				self._player_board[coord2[0] + str(int(coord2[1:]) + x)] = ship.get_ship_symbol()
+				ship.append_placement_coord_to_ship_location(coord2[0] + str(int(coord2[1:]) + x))
+		if coord1[0] != coord2[0] and coord1[0] < coord2[0]:
+			for x in range(1, ship.get_ship_length() - 1):
+				self._player_board[chr(ord(coord1[0]) + x) + coord1[1:]] = ship.get_ship_symbol()
+				ship.append_placement_coord_to_ship_location(chr(ord(coord1[0]) + x) + coord1[1:])
+		if coord1[0] != coord2[0] and coord1[0] > coord2[0]:
+			for x in range(1, ship.get_ship_length() - 1):
+				self._player_board[chr(ord(coord2[0]) + x) + coord2[1:]] = ship.get_ship_symbol()
+				ship.append_placement_coord_to_ship_location(chr(ord(coord2[0]) + x) + coord2[1:])
+
+	def get_coord_value_in_radar(self, coord):
+		return self._player_radar[coord]
+
+	def get_coord_value_in_board(self, coord):
+		return self._player_board[coord]
