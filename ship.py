@@ -31,7 +31,7 @@ class Ship:
 			if self._location[x] == 'X':
 				hit_count += 1
 		if hit_count == self._length:
-			print(f"Player {enemy_player.player_number}'s {self.type} is sunk.")
+			print(f"Player {enemy_player.get_player_number()}'s {self.type} is sunk.")
 			return True
 		return False
 

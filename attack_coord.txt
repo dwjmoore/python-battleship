@@ -34,63 +34,6 @@ if self.attack_number >= 4 and self.attack_hit_log[
 		   -3] == False and self.attack_hit_log[-4] and self.found_ship == True:
 			return self.get_attack_coord_after_hit(-4, player_enemy_board)
 
-
-def get_attack_coord_after_hit(self, element, player_enemy_board):
-		letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-		numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-		last_hit_coord_letter = self.attack_coord_log[element][0]
-		last_hit_coord_number = int(self.attack_coord_log[element][1:])
-		attack_coord_options = []
-		#Gets attack coord option along the row
-		if last_hit_coord_letter == 'A':
-			attack_coord_options.append('B' + str(last_hit_coord_number))
-		elif last_hit_coord_letter == 'J':
-			attack_coord_options.append('I' + str(last_hit_coord_number))
-		else:
-			attack_coord_options.append(
-			 chr(ord(last_hit_coord_letter) - 1) + str(last_hit_coord_number))
-			attack_coord_options.append(
-			 chr(ord(last_hit_coord_letter) + 1) + str(last_hit_coord_number))
-		#Gets attack coord option along the column
-		if last_hit_coord_number == 1:
-			attack_coord_options.append(last_hit_coord_letter +
-			                            str(last_hit_coord_number + 1))
-		elif last_hit_coord_number == 10:
-			attack_coord_options.append(last_hit_coord_letter +
-			                            str(last_hit_coord_number - 1))
-		else:
-			attack_coord_options.append(last_hit_coord_letter +
-			                            str(last_hit_coord_number - 1))
-			attack_coord_options.append(last_hit_coord_letter +
-			                            str(last_hit_coord_number + 1))
-		#Selects random attack coord if surrounding coords already attacked
-		if len(attack_coord_options) == 2 and (
-		  player_enemy_board[attack_coord_options[0]] == 'X'
-		  or player_enemy_board[attack_coord_options[0]]
-		  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
-		               or player_enemy_board[attack_coord_options[1]] == 'O'):
-			return (random.choice(letters) + random.choice(numbers))
-		if len(attack_coord_options) == 3 and (
-		  player_enemy_board[attack_coord_options[0]] == 'X'
-		  or player_enemy_board[attack_coord_options[0]]
-		  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
-		               or player_enemy_board[attack_coord_options[1]] == 'O') and (
-		                player_enemy_board[attack_coord_options[2]] == 'X'
-		                or player_enemy_board[attack_coord_options[2]] == 'O'):
-			return (random.choice(letters) + random.choice(numbers))
-		if len(attack_coord_options) == 4 and (
-		  player_enemy_board[attack_coord_options[0]] == 'X'
-		  or player_enemy_board[attack_coord_options[0]]
-		  == 'O') and (player_enemy_board[attack_coord_options[1]] == 'X'
-		               or player_enemy_board[attack_coord_options[1]] == 'O') and (
-		                player_enemy_board[attack_coord_options[2]] == 'X'
-		                or player_enemy_board[attack_coord_options[2]] == 'O') and (
-		                 player_enemy_board[attack_coord_options[3]] == 'X'
-		                 or player_enemy_board[attack_coord_options[3]] == 'O'):
-			return (random.choice(letters) + random.choice(numbers))
-		#Randomly gets attack coord from attack coord options list
-		return random.choice(attack_coord_options)
-
 	def get_attack_coord_after_two_hits_on_ship(self, hit1, hit2, player_enemy_board):
 		first_hit_coord_letter = self.attack_coord_log[hit1][0]
 		first_hit_coord_number = int(self.attack_coord_log[hit1][1:])
@@ -192,3 +135,5 @@ def get_attack_coord_after_hit(self, element, player_enemy_board):
 #hit, miss, hit, miss
 #hit, miss, miss, hit, miss
 #after two hits, if the next coordinate already has an 'X' or 'O'
+
+https://towardsdatascience.com/coding-an-intelligent-battleship-agent-bf0064a4b319

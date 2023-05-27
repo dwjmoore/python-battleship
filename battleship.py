@@ -50,7 +50,7 @@ class Battleship:
 			#Win condition for Player 1 win
 			if player2.get_sunk_ships() == 5:
 				print(
-				 f"All of Player {player2.player_number}'s ships are sunk. Player {player1.player_number} wins!"
+				 f"All of Player {player2.get_player_number()}'s ships are sunk. Player {player1.get_player_number()} wins!"
 				)
 				break
 			#Player 2 turn
@@ -58,7 +58,7 @@ class Battleship:
 			#Win condition for player 2 win
 			if player1.get_sunk_ships() == 5:
 				print(
-				 f"All of Player {player1.player_number}'s ships are sunk. Player {player2.player_number} wins!"
+				 f"All of Player {player1.get_player_number()}'s ships are sunk. Player {player2.get_player_number()} wins!"
 				)
 				break
 			input("Hit enter to continue.")
